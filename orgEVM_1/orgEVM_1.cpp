@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 using namespace std;
 
 
@@ -163,18 +163,38 @@ double binToDouble(int bitArray[64]) {
 void setIntBits(int bitArray[32]) {
 	int count;
 	int bitIndex;
+	int bitValue;
+
+	cout << "\nСколько разрядов установить: ";
+	cin >> count;
+	for (int i = 0; i < count; i++) {
+		cout << "Номер разряда: ";
+		cin >> bitIndex;
+		cout << "Значение разряда (0 или 1): ";
+		cin >> bitValue;
+		bitArray[31 - bitIndex] = bitValue;
+	}
+}
+
+void setDoubleBits(int bitArray[64]) {
+	int count;
+	int bitIndex;
+	int bitValue;
 
 	cout << "\nСколько разрядов установить: ";
 	cin >> count;
 
 	for (int i = 0; i < count; i++) {
+
 		cout << "Номер разряда: ";
 		cin >> bitIndex;
 
-		bitArray[31 - bitIndex] = 1;
+		cout << "Значение разряда (0 или 1): ";
+		cin >> bitValue;
+
+		bitArray[63 - bitIndex] = bitValue;
 	}
 }
-
 
 void taskInt() {
 	clear();
@@ -219,12 +239,17 @@ void taskTenInt() {
 	cout << "\nВнутреннее представление:\n";
 	printInt(value);
 
-
 	for (int i = 0; i < 32; i++) {
 		bitArray[i] = (value >> (31 - i)) & 1;
 	}
 
 	setIntBits(bitArray);
+
+	cout << "\nИзменённое представление:\n";
+	for (int i = 0; i < 32; i++) {
+		cout << bitArray[i];
+	}
+	cout << "\n";
 
 	int result = binToInt(bitArray);
 
@@ -261,6 +286,44 @@ void taskDouble() {
 	cout << "Обратно из BIN: " << result << "\n";
 
 	cout << "\nРазмер DOUBLE: " << sizeof(double) << " байт\n";
+
+	cout << "\nНажмите Enter чтобы продолжить";
+	cin.ignore();
+	cin.get();
+}
+
+void taskTenDouble() {
+	clear();
+
+	double value;
+	int bitArray[64]{};
+
+	cout << "Работа с типом DOUBLE\n";
+	cout << "---------------------\n\n";
+
+	inputDouble(value);
+
+	cout << "\nВнутреннее представление:\n";
+	printDouble(value);
+
+	printDoubleParts(value, bitArray);
+
+	setDoubleBits(bitArray);
+
+	cout << "\nИзменённое представление:\n";
+
+	for (int i = 0; i < 64; i++) {
+		cout << bitArray[i];
+
+		if (i == 0) cout << " ";
+		if (i == 11) cout << " ";
+	}
+
+	cout << "\n";
+
+	double result = binToDouble(bitArray);
+
+	cout << "\nОбратно из BIN: " << result << "\n";
 
 	cout << "\nНажмите Enter чтобы продолжить";
 	cin.ignore();
@@ -336,7 +399,7 @@ int main() {
 
 
 			else if (modeTen == 2) {
-				taskDouble();
+				taskTenDouble();
 			}
 		}
 	}
